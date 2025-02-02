@@ -33,6 +33,7 @@ Dodaj odpowiednie klucze API do pliku
 
 ### 5️⃣ Uruchom projekt jako HTTPS
 W Visual Studio:
+- Wybierz **HTTPS*
 - Kliknij **Run** (zielona strzałka)
 
 ## 🎯 Technologie
