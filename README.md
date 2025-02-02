@@ -1,0 +1,43 @@
+# 📌 Projekt Wojciech Jurasz
+
+## 📋 Wymagania
+
+- **Visual Studio 2022**
+- **.NET 8** 
+- **SQL Server** 
+- **Konto API** 
+
+## 🚀 Instalacja i uruchomienie
+
+Aby uruchomić aplikację, wykonaj poniższe kroki:
+
+### 1️⃣ Sklonowanie repozytorium
+```sh
+ git clone https://github.com/wjurasz/ProjektJezykiWebowe
+ cd nazwa-repo
+```
+
+### 2️⃣ Otwórz projekt w Visual Studio 2022
+Plik `*.sln` otwórz w Visual Studio 2022.
+
+### 3️⃣ Utwórz migrację bazy danych
+W **Package Manager Console** uruchom:
+```sh
+  Add-migration Nazwa
+  Update-Database
+```
+
+### 4️⃣ Skonfiguruj klucze API
+Dodaj odpowiednie klucze API do pliku
+
+
+### 5️⃣ Uruchom projekt jako HTTPS
+W Visual Studio:
+- Kliknij **Run** (zielona strzałka)
+
+## 🎯 Technologie
+- C# / .NET
+- ASP.NET Core
+- Entity Framework
+- SQL Server
+- REST API
