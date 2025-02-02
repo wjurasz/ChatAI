@@ -1,0 +1,87 @@
+﻿@page "/Chat"
+@rendermode InteractiveServer
+@using GroqApiLibrary;
+@using System.Text.Json.Nodes;
+
+<PageTitle>Chat AI</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="text-center mb-4">
+                <h1 class="display-4 text-primary font-weight-bold">Chat AI</h1>
+                <p class="text-muted">Zapytaj Chat!</p>
+            </div>
+            <div class="chat-container mb-4 p-3 border rounded bg-light" style="max-height: 400px; overflow-y: auto;">
+                @foreach (var message in messages)
+                {
+                    @if (message.IsUsersMessage)
+                    {
+                        <div class="text-end mb-2">
+                            <strong class="d-block text-primary">Użytkownik</strong>
+                            <div class="alert alert-primary d-inline-block text-start" style="max-width: 75%;">@message.Message</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-start mb-2">
+                            <strong class="d-block text-secondary">Chat</strong>
+                            <div class="alert alert-secondary d-inline-block text-start" style="max-width: 75%;">@message.Message</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control form-control-lg" placeholder="Zapytaj chat..." @bind="newMessage" />
+                <button class="btn btn-dark btn-lg" type="button" @onclick="AskChat">Zapytaj</button>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ChatMessage> messages = new();
+    private string? newMessage;
+    private string? newPrompt;
+    private string? answer;
+
+    private static string apiKey = "KOD_API";
+    private GroqApiClient groqApi = new GroqApiClient(apiKey);
+
+    private async Task AskChat()
+    {
+        newPrompt = newMessage;
+        if (messages != null)
+        {
+            newPrompt = "Here is our conversation history: ";
+            foreach (var message in messages)
+            {
+                newPrompt += message.Message + " ";
+            }
+
+            newPrompt += " Now i will send you a question. Answer for that question. " + newMessage;
+        }
+        var request = new JsonObject
+            {
+                ["model"] = "mixtral-8x7b-32768",
+                ["messages"] = new JsonArray
+            {
+                new JsonObject
+                {
+                    ["role"] = "user",
+                    ["content"] = newPrompt
+                }
+            }
+            };
+
+        var result = await groqApi.CreateChatCompletionAsync(request);
+        answer = result?["choices"]?[0]?["message"]?["content"]?.ToString();
+
+        messages.Add(new ChatMessage { Message = newMessage, IsUsersMessage = true });
+        messages.Add(new ChatMessage { Message = answer, IsUsersMessage = false });
+        newMessage = String.Empty;
+        StateHasChanged();
+    }
+}

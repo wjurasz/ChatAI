@@ -1,0 +1,68 @@
+﻿@page "/weather"
+@inject WeatherService WeatherService
+@rendermode InteractiveServer
+
+<h3 class="text-primary">🌦️ Prognoza pogody</h3>
+
+<div class="input-group mb-3">
+    <input @bind="city" class="form-control" placeholder="Podaj miasto" />
+    <button @onclick="LoadWeather" class="btn btn-dark" disabled="@isLoading">Pobierz pogodę</button>
+</div>
+
+@if (isLoading)
+{
+    <div class="alert alert-info">⏳ Pobieranie danych...</div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">❌ @errorMessage</div>
+}
+
+@if (weatherData != null)
+{
+    <div class="card shadow-lg p-4">
+        <h4 class="text-success">@weatherData.Location.Name, @weatherData.Location.Country</h4>
+
+        <div class="d-flex align-items-center">
+            <img src="@weatherData.Current.Condition.Icon" alt="Ikona pogody" class="weather-icon me-3" />
+            <div>
+                <p class="fs-4 fw-bold">🌡 @weatherData.Current.Temp_C °C</p>
+                <p>🌬 <b>Odczuwalna:</b> @weatherData.Current.Feelslike_C °C</p>
+                <p>💧 <b>Wilgotność:</b> @weatherData.Current.Humidity%</p>
+                <p>🌤 <b>Opis:</b> @weatherData.Current.Condition.Text</p>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string? city;
+    private WeatherData? weatherData;
+    private bool isLoading = false;
+    private string? errorMessage;
+
+    private async Task LoadWeather()
+    {
+        isLoading = true;
+        errorMessage = null;
+        weatherData = null;  
+
+        try
+        {
+            weatherData = await WeatherService.GetWeatherAsync(city);
+
+            if (weatherData?.Location?.Name == null)
+            {
+                errorMessage = "Nie znaleziono miasta, spróbuj bez polskich znaków.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Nie znaleziono miasta, spróbuj bez polskich znaków."; 
+            Console.WriteLine($"❌ Błąd API: {ex.Message}");
+        }
+
+        isLoading = false;
+    }
+}
