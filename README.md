@@ -29,11 +29,17 @@ W **Package Manager Console** uruchom:
 
 ### 4️⃣ Skonfiguruj klucze API
 Dodaj odpowiednie klucze API do pliku
+```json
+"APIKeys": {
+  "Groq": "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",
+  "WeatherApi": "661cd2064114358ad7223220250102"
+}
+```
 
 
 ### 5️⃣ Uruchom projekt jako HTTPS
 W Visual Studio:
-- Wybierz **HTTPS*
+- Wybierz **HTTPS**
 - Kliknij **Run** (zielona strzałka)
 
 ## 🎯 Technologie
