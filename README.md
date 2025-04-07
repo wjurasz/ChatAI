@@ -31,7 +31,7 @@ W **Package Manager Console** uruchom:
 Dodaj odpowiednie klucze API do pliku
 ```json
 "APIKeys": {
-  "Groq": "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",
+  "Groq": "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",
   "WeatherApi": "4661cd2064114358ad7223220250102"
 }
 ```
