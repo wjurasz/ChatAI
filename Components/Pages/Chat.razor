@@ -47,7 +47,7 @@
     private string? newPrompt;
     private string? answer;
 
-    private static string apiKey = "KOD_API";
+    private static string apiKey = "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";
     private GroqApiClient groqApi = new GroqApiClient(apiKey);
 
     private async Task AskChat()
@@ -65,7 +65,7 @@
         }
         var request = new JsonObject
             {
-                ["model"] = "mixtral-8x7b-32768",
+                ["model"] = "llama-3.1-8b-instant",
                 ["messages"] = new JsonArray
             {
                 new JsonObject
